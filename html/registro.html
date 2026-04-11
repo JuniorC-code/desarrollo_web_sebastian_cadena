@@ -7,7 +7,11 @@
 <body>
     <div class="main-container">
         <h1>Registro</h1>
-        <form name="registroForm" method="post">
+        <div id = "val-box" hidden>
+            <h2 id="val-msg"></h2>
+            <ul id="val-list"></ul>
+        </div> 
+        <form name="registro-form" method="post" enctype="multipart/form-data">
             <label for="name">Nombre completo:</label>
             <input type="text" id="name" name="name" required>
 
@@ -28,13 +32,12 @@
 
             <label for = "tipo">Tipo de usuario:</label>
             <select id="tipo" name="tipo" required>
-                <option value="">Seleccione un tipo</option>
                 <option value="estudiante pregrado">Estudiante pregrado</option>
                 <option value="estudiante postgrado">Estudiante postgrado</option>
                 <option value="funcionario">Funcionario</option>
                 <option value="academico">Academico</option>
             </select>
-            <button type="submit" id="registro-btn">Registrarse</button>
+            <button type="button" id="registro-btn">Registrarse</button>
         </form>
     </div>
     <script src="../javascript/registro.js"></script>
