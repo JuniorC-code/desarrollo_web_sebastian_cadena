@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../css/registro.css">
+    <title>Registro</title>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Registro</h1>
+        <form name="registroForm" method="post">
+            <label for="name">Nombre completo:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Edad:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for = "telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" required>
+
+            <label for="username">Nombre de usuario:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for = "tipo">Tipo de usuario:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="">Seleccione un tipo</option>
+                <option value="estudiante pregrado">Estudiante pregrado</option>
+                <option value="estudiante postgrado">Estudiante postgrado</option>
+                <option value="funcionario">Funcionario</option>
+                <option value="academico">Academico</option>
+            </select>
+            <button type="submit" id="registro-btn">Registrarse</button>
+        </form>
+    </div>
+    <script src="../javascript/registro.js"></script>
+</html>
