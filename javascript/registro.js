@@ -135,8 +135,7 @@ const validarRegistro = () =>{
       submitButton.innerText = "Enviar";
       submitButton.style.marginRight = "10px";
       submitButton.addEventListener("click", () => {
-        // myForm.submit();
-        // no tenemos un backend al cual enviarle los datos
+        window.location.href = "../html/listado.html";
       });
 
       let backButton = document.createElement("button");
@@ -152,6 +151,7 @@ const validarRegistro = () =>{
 
       // hacer visible el mensaje de validación
       validationBox.hidden = false;
+      localStorage.setItem("username", username);
     }
 };
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Listado de Usuarios</title>
+    <link rel="stylesheet" href="../css/informar_actividad.css">
+</head>
+<body>
+    <form name="informar-actividad-form" method="post" enctype="multipart/form-data">
+            <label for = "Dia">Día:</label>
+            <input type="date" id="Dia" name="Dia" required>
+
+            <label for = "horario">Horario:</label>
+            <input type="time" id="horario" name="horario" required>
+
+            <label for = "actividad">Actividad:</label>
+            <input type="text" id="actividad" name="actividad" required>
+
+            <label for = "categoria">Categoría:</label>
+            <select id="categoria" name="categoria" required>
+                <option value="Deporte">Deporte</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Social">Social</option>
+                <option value="Académico">Académico</option>
+                <option value="Otra">Otra</option>
+            </select>
+            
+            <label for = "descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+
+            <button type="button" id="informaractividad-btn">Informar Actividad</button>
+        </form>
+</body>
+</html>

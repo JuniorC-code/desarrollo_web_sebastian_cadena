@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Listado de Usuarios</title>
+    <link rel="stylesheet" href="../css/listado.css">
+</head>
+<body> 
+<div class="container">
+        <h1 id="saludo"></h1>
+        <div class="buttons">
+            <button id="volverbtn">Volver</button>
+            <button id="informar-actividad">Informar actividad</button>
+        </div>
+
+        <div class="controls">
+    <select id="filtro-categoria">
+        <option value="">Todas las categorías</option>
+        <option value="Deporte">Deporte</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Social">Social</option>
+        <option value="Académico">Académico</option>
+        <option value="Otra">Otra</option>
+    </select>
+
+    <select id="ordenar">
+        <option value="">Ordenar por</option>
+        <option value="username">Nombre</option>
+        <option value="dia">Día</option>
+    </select>
+</div>
+
+
+        <table id="actividades-table"></table>
+        <div id="detalle"></div>
+    </div>
+</body>
+<script src="../javascript/listado.js"></script>
+</html>
