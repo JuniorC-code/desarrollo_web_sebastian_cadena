@@ -151,10 +151,15 @@ const validarRegistro = () =>{
 
       // hacer visible el mensaje de validación
       validationBox.hidden = false;
-      localStorage.setItem("username", username);
+      sessionStorage.setItem("username", username);
     }
 };
 
+
+let volverbtn = document.getElementById("volverbtn");
+volverbtn.addEventListener("click", () => {
+    window.location.href = "../html/index.html";
+});
 
 
 let registroForm = document.getElementById('registro-btn');

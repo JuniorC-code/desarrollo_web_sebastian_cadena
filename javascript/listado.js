@@ -1,7 +1,7 @@
 const actividades = [
   {
     username: "seba",
-    dia: "Lunes",
+    dia: "25-03-2026",
     horario: "10:00",
     actividad: "Fútbol",
     foto: "https://via.placeholder.com/50",
@@ -10,7 +10,7 @@ const actividades = [
   },
   {
     username: "ana",
-    dia: "Martes",
+    dia: "26-03-2026",
     horario: "15:00",
     actividad: "Estudio",
     foto: "https://via.placeholder.com/50",
@@ -19,11 +19,12 @@ const actividades = [
   }
 ];
 
-let actividadesOriginal = [...actividades];
+let actividadesGuardadas = JSON.parse(sessionStorage.getItem("actividades")) || [];
+let actividadesOriginal = [...actividades, ...actividadesGuardadas];
 
 
 
-let username = localStorage.getItem("username");
+let username = sessionStorage.getItem("username");
 let saludo = document.getElementById("saludo");
 let informar_actividad_boton = document.getElementById("informar-actividad");
 let volverbtn = document.getElementById("volverbtn");
@@ -95,6 +96,11 @@ const renderTabla = (lista) => {
 }
 
 
+const parseFecha = (fechaStr) => {
+  let [dia, mes, anio] = fechaStr.split("-");
+  return new Date(anio, mes - 1, dia);
+};
+
 // =======================
 // FILTRO + ORDEN
 // =======================
@@ -118,8 +124,7 @@ const aplicarFiltros = () => {
   }
 
   if (criterio === "dia") {
-    const ordenDias = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
-    lista.sort((a, b) => ordenDias.indexOf(a.dia) - ordenDias.indexOf(b.dia));
+    lista.sort((a, b) => parseFecha(a.dia) - parseFecha(b.dia));
   }
 
   renderTabla(lista);

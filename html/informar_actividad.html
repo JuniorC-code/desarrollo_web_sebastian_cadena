@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <title>Listado de Usuarios</title>
     <link rel="stylesheet" href="../css/informar_actividad.css">
 </head>
 <body>
-    <form name="informar-actividad-form" method="post" enctype="multipart/form-data">
+    <div class="main-container"> 
+        <h1>Informar Actividad</h1>
+        <div id = "val-box" hidden>
+            <h2 id="val-msg"></h2>
+            <ul id="val-list"></ul>
+        </div>
+        <form name="informar-actividad-form" method="post" enctype="multipart/form-data">
             <label for = "Dia">Día:</label>
             <input type="date" id="Dia" name="Dia" required>
 
@@ -28,7 +33,12 @@
             <label for = "descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" required></textarea>
 
+            <label for = "foto"> Foto</label>
+            <input type="file" id="foto" name="foto" accept="image/*" required>
+
             <button type="button" id="informaractividad-btn">Informar Actividad</button>
         </form>
+    </div>
+    <script src="../javascript/informar_actividad.js"></script>
 </body>
 </html>

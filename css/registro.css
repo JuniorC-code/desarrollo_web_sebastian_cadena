@@ -47,7 +47,7 @@ input {
 }
 
 
-button#registro-btn {
+button{
     margin-top: 20px;
     width: 100%;
     padding: 10px;
@@ -59,6 +59,6 @@ button#registro-btn {
     font-size: 16px;
 }
 
-button#registro-btn:hover {
+button:hover {
   background-color: #2ecc71; 
 }
