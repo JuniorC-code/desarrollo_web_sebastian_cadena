@@ -33,7 +33,6 @@ const validarFoto = (files) => {
 };
 
 
-
 const validarFormulario = () => {
   let myform = document.forms["informar-actividad-form"];
   let dia = myform["Dia"].value;
@@ -99,6 +98,7 @@ const validarFormulario = () => {
       // hacer visible el mensaje de validación
       validationBox.hidden = false;
     } else {
+      //Exitoso, se puede guardar la actividad y redirigir al listado
       // Ocultar el formulario
       myform.style.display = "none";
 
@@ -127,10 +127,9 @@ const validarFormulario = () => {
               actividad: actividad,
               categoria: categoria,
               descripcion: descripcion,
-              foto: reader.result // imagen en base64
+              foto: reader.result
             };
           
-            // obtener actividades guardadas
             let actividadesGuardadas = JSON.parse(sessionStorage.getItem("actividades")) || [];
           
             // agregar nueva
@@ -143,7 +142,7 @@ const validarFormulario = () => {
             window.location.href = "../html/listado.html";
           };
           
-          reader.readAsDataURL(foto[0]); // IMPORTANTE
+          reader.readAsDataURL(foto[0]); 
         });
 
       let backButton = document.createElement("button");

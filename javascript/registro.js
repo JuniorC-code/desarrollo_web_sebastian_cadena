@@ -13,14 +13,13 @@ const validateAge = (age) => {
 
 const validatePhoneNumber = (phoneNumber) => {
   if (!phoneNumber) return false;
-  // validación de longitud
+
   let lengthValid = phoneNumber.length >= 8;
 
-  // validación de formato
   let re = /^[0-9]+$/;
   let formatValid = re.test(phoneNumber);
 
-  // devolvemos la lógica AND de las validaciones.
+
   return lengthValid && formatValid;
 };
 
@@ -28,11 +27,10 @@ const validateEmail = (email) => {
     if (!email) return false;
     let lengthValid = email.length > 15;
 
-    // validamos el formato
     let re = /^[\w.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     let formatValid = re.test(email);
 
-    // devolvemos la lógica AND de las validaciones.
+
     return lengthValid && formatValid;
 };
 
@@ -101,22 +99,19 @@ const validarRegistro = () =>{
 
     if (!isValid) {
       validationListElem.textContent = "";
-      // agregar elementos inválidos al elemento val-list.
       for (input of invalidInputs) {
         let listElement = document.createElement("li");
         listElement.innerText = input;
         validationListElem.append(listElement);
       }
-      // establecer val-msg
+
       validationMessageElem.innerText = "Los siguientes campos son inválidos:";
 
       validationBox.style.margin = "20px";
       validationBox.style.padding = "20px";
-      // aplicar estilos de error
       validationBox.style.backgroundColor = "#ffdddd";
       validationBox.style.borderLeftColor = "#f44336";
 
-      // hacer visible el mensaje de validación
       validationBox.hidden = false;
     } else {
       // Ocultar el formulario

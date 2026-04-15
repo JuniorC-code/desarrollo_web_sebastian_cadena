@@ -69,11 +69,6 @@ tabla.innerHTML = `
   <tbody></tbody>
 `;
 
-
-
-// =======================
-// RENDER TABLA
-// =======================
 const renderTabla = (lista) => {
   let tbody = document.querySelector("#actividades-table tbody");
   tbody.innerHTML = "";
@@ -101,9 +96,6 @@ const parseFecha = (fechaStr) => {
   return new Date(anio, mes - 1, dia);
 };
 
-// =======================
-// FILTRO + ORDEN
-// =======================
 let filtroCategoria = document.getElementById("filtro-categoria");
 let ordenar = document.getElementById("ordenar");
 
@@ -130,14 +122,11 @@ const aplicarFiltros = () => {
   renderTabla(lista);
 }
 
-// eventos
+// eventos para filtros
 filtroCategoria.addEventListener("change", aplicarFiltros);
 ordenar.addEventListener("change", aplicarFiltros);
 
 
-// =======================
-// DETALLE
-// =======================
 const mostrarDetalle = (act) => {
   let detalle = document.getElementById("detalle");
 
@@ -153,8 +142,4 @@ const mostrarDetalle = (act) => {
   `;
 }
 
-
-// =======================
-// INICIAL
-// =======================
 renderTabla(actividadesOriginal);
