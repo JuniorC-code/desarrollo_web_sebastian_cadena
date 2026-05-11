@@ -97,6 +97,7 @@ const validarFormulario = () => {
 
       // hacer visible el mensaje de validación
       validationBox.hidden = false;
+      
     } else {
       //Exitoso, se puede guardar la actividad y redirigir al listado
       // Ocultar el formulario
