@@ -1,5 +1,8 @@
-from flask import Flask, render_template, redirect, url_for
-from database.db import get_ultimos_5_miembros
+from datetime import datetime
+
+from flask import Flask, render_template, redirect, url_for, request
+from database.db import create_actividad, create_foto, create_miembro, get_comunas, get_ultimos_5_miembros
+from utils.validations import validate_register_data
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -14,9 +17,38 @@ def index():
     ultimos_miembros = get_ultimos_5_miembros()
     return render_template('index.html', miembros=ultimos_miembros)
 
-@app.route('/registro')
+@app.route('/registro', methods=['GET', 'POST'])
 def registro():
-    return render_template('registro.html')
+    comunas = get_comunas()
+    if request.method == "POST":
+        nombre = request.form["nombre"].strip()
+        email = request.form["email"].strip()
+        telefono = request.form["telefono"].strip()
+        comuna_id = request.form["comuna_id"]
+        dia = request.form["dia"]
+        hora_inicio = request.form["hora_inicio"]
+        duracion = request.form["duracion"]
+        tipo = request.form["tipo"]
+        actividad_nombre = request.form["actividad_nombre"].strip()
+        descripcion = request.form["descripcion"].strip()
+        foto = request.files["foto"]
+
+        errors = validate_register_data(nombre,email,telefono,duracion,actividad_nombre,foto)
+
+        if len(errors) == 0:
+
+            fecha_registro = datetime.now()
+            miembro_id = create_miembro(nombre,email,telefono,fecha_registro,comuna_id)
+            actividad_id = create_actividad(miembro_id,dia,hora_inicio,duracion,tipo,actividad_nombre,descripcion)
+            ruta_archivo = f"static/uploads/{foto.filename}"
+            foto.save(ruta_archivo)
+            create_foto(ruta_archivo,foto.filename,actividad_id)
+            return redirect(url_for("index"))
+
+        # Si hay errores, se vuelven a mostrar en el formulario
+        return render_template("registro.html", comunas=comunas, errors=errors)
+    if request.method == "GET":
+        return render_template("registro.html", comunas=comunas)
 
 @app.route('/listado')        
 def listado():

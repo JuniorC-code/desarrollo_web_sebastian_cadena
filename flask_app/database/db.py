@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime, Enum, Text
 
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy.orm import joinedload, sessionmaker, declarative_base, relationship
 
 # Configuración de la base de datos
 DB_NAME = "tarea2"
@@ -177,7 +177,7 @@ def get_miembro_by_id(miembro_id):
 
 def get_ultimos_5_miembros():
     session = SessionLocal()
-    miembros = (session.query(Miembro).order_by(Miembro.id.desc()).limit(5).all())
+    miembros = (session.query(Miembro).options(joinedload(Miembro.comuna)).order_by(Miembro.id.desc()).limit(5).all())
     session.close()
     return miembros
 

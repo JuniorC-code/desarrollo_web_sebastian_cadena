@@ -62,3 +62,17 @@ button{
 button:hover {
   background-color: #2ecc71; 
 }
+
+.error-box {
+    background-color: #ffebee;
+    border: 1px solid #e53935;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.error-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
