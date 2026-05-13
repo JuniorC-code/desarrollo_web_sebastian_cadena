@@ -58,12 +58,7 @@ def listado():
     total_pages = total // per_page
     if total % per_page != 0:
         total_pages += 1
-    return render_template(
-        "listado.html",
-        miembros=miembros,
-        page=page,
-        total_pages=total_pages
-    )
+    return render_template( "listado.html", miembros=miembros, page=page, total_pages=total_pages )
 
 
 @app.route('/estadisticas')   
