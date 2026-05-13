@@ -173,6 +173,13 @@ def get_miembro_by_id(miembro_id):
     session.close()
     return miembro
 
+# Obtener los últimos 5 miembros registrados (para la portada)
+
+def get_ultimos_5_miembros():
+    session = SessionLocal()
+    miembros = (session.query(Miembro).order_by(Miembro.id.desc()).limit(5).all())
+    session.close()
+    return miembros
 
 # ACTIVIDADES
 

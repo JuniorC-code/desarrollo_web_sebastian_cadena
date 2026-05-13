@@ -7,10 +7,35 @@
 {% endblock %} {% block content %}
     <div class="main-container">
         <h1>Bienvenido a Gestion DCC</h1>
-        <button class="btn"  id="registro">Registro miembros y actividades</button>
-        <button class="btn" id="listado">Ver listado de miembros</button>
-        <button class="btn" id="estadisticas">Estadísticas</button>
+        <div class="buttons-container">
+            <button class="btn" id="registro"> Registro miembros y actividades</button>
+            <button class="btn" id="listado"> Ver listado de miembros</button>
+            <button class="btn" id="estadisticas"> Estadísticas </button>
+        </div>
     </div>
+    <h2>Últimos 5 miembros registrados</h2>
+    <table class="members-table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Fecha registro</th>
+            <th>Comuna</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for miembro in miembros %}
+        <tr>
+            <td>{{ miembro.nombre }}</td>
+            <td>{{ miembro.email }}</td>
+            <td>{{ miembro.telefono }}</td>
+            <td>{{ miembro.fecha_registro }}</td>
+            <td>{{ miembro.comuna.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
     {% endblock %} {% block javascript %}
     <script src = "{{ url_for('static', filename='javascript/index.js') }}"></script>
 {% endblock %}
