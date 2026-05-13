@@ -10,3 +10,8 @@ function toggleDetalle(id){
         detalle.style.display = "table-row";
     }
 }
+
+volverbtn = document.getElementById("volver-btn");
+volverbtn.addEventListener("click", () => {
+    window.location.href = "/";
+});

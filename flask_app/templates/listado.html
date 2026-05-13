@@ -10,9 +10,7 @@ href="{{ url_for('static', filename='css/listado.css') }}"
     <h1>Listado de miembros</h1>
 
     <div class="top-buttons">
-        <a href="{{ url_for('index') }}">
-            <button>Volver</button>
-        </a>
+            <button name="volver-btn" id="volver-btn">Volver</button>
     </div>
 
     <table>
@@ -36,7 +34,7 @@ href="{{ url_for('static', filename='css/listado.css') }}"
             <tr id="detalle-{{ miembro.id }}" class="detalle-row" >
                 <td colspan="4">
                     <div class="detalle-container">
-                        <h3>Actividades</h3>
+                        <h2>Actividades</h2>
                         {% for actividad in miembro.actividades %}
                         <div class="actividad-card">
                             <p>
@@ -65,10 +63,7 @@ href="{{ url_for('static', filename='css/listado.css') }}"
                             </p>
                             <div class="fotos-container">
                                 {% for foto in actividad.fotos %}
-                                <img
-                                src="/{{ foto.ruta_archivo }}"
-                                class="actividad-foto"
-                                >
+                                <img src="/{{ foto.ruta_archivo }}" class="actividad-foto" alt="Foto actividad">
                                 {% endfor %}
                             </div>
                         </div>
