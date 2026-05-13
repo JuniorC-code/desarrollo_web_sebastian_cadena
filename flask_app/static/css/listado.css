@@ -1,87 +1,97 @@
-tr {
-  cursor: pointer;
-}
-
-tr:hover {
-  background-color: #f0f0f0;
-}
-
-#detalle {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-}
-
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background-color: #222a34;
-    color: white;
-    padding: 10px;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #222a34;
-    text-align: center;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    
-}
-
-.container {
-    max-width: 900px;
+.container{
+    width: 90%;
+    max-width: 1200px;
     margin: 40px auto;
     background-color: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.buttons{
-    display: flex;
-    justify-content: center;
-    gap: 30%;
-    margin-bottom: 5%;
-    cursor:pointer;
+h1{
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-button {
+.top-buttons{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+button{
     background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
 }
 
-
-button:hover {
+button:hover{
     background-color: #2ecc71;
 }
 
-
-.controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+table{
+    width: 100%;
+    border-collapse: collapse;
 }
 
-select {
-    padding: 8px;
-    border-radius: 5px;
+th{
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+}
+
+td{
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+tbody tr{
+    cursor: pointer;
+}
+
+tbody tr:hover{
+    background-color: #f5f5f5;
+}
+
+.detalle-row{
+    display: none;
+    background-color: #fafafa;
+}
+
+.detalle-container{
+    text-align: left;
+    padding: 15px;
+}
+
+.actividad-card{
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.fotos-container{
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.actividad-foto{
+    width: 200px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.pagination{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }

@@ -1,38 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Listado de Usuarios</title>
-    <link rel="stylesheet" href="../css/listado.css">
-</head>
-<body> 
+{% extends "base.html" %}{% block title %}Listado de miembros{% endblock %}{% block css %}
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/listado.css') }}"
+>
+{% endblock %}
+{% block content %}
 <div class="container">
-        <h1 id="saludo"></h1>
-        <div class="buttons">
-            <button id="volverbtn">Volver</button>
-            <button id="informar-actividad">Informar actividad</button>
-        </div>
 
-        <div class="controls">
-    <select id="filtro-categoria">
-        <option value="">Todas las categorías</option>
-        <option value="Deporte">Deporte</option>
-        <option value="Cultural">Cultural</option>
-        <option value="Social">Social</option>
-        <option value="Académico">Académico</option>
-        <option value="Otra">Otra</option>
-    </select>
+    <h1>Listado de miembros</h1>
 
-    <select id="ordenar">
-        <option value="">Ordenar por</option>
-        <option value="username">Nombre</option>
-        <option value="dia">Día</option>
-    </select>
-</div>
-
-        <table id="actividades-table"></table>
-        <div id="detalle"></div>
+    <div class="top-buttons">
+        <a href="{{ url_for('index') }}">
+            <button>Volver</button>
+        </a>
     </div>
-    <script src="../javascript/listado.js"></script>
-</body>
-</html>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Comuna</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for miembro in miembros %}
+            <tr onclick="toggleDetalle('{{ miembro.id }}')">
+                <td>{{ miembro.nombre }}</td>
+                <td>{{ miembro.email }}</td>
+                <td>{{ miembro.telefono }}</td>
+                <td>{{ miembro.comuna.nombre }}</td>
+            </tr>
+
+            <tr id="detalle-{{ miembro.id }}" class="detalle-row" >
+                <td colspan="4">
+                    <div class="detalle-container">
+                        <h3>Actividades</h3>
+                        {% for actividad in miembro.actividades %}
+                        <div class="actividad-card">
+                            <p>
+                                <strong>Nombre:</strong>
+                                {{ actividad.nombre }}
+                            </p>
+                            <p>
+                                <strong>Tipo:</strong>
+                                {{ actividad.tipo }}
+                            </p>
+                            <p>
+                                <strong>Día:</strong>
+                                {{ actividad.dia }}
+                            </p>
+                            <p>
+                                <strong>Hora inicio:</strong>
+                                {{ actividad.hora_inicio }}
+                            </p>
+                            <p>
+                                <strong>Duración:</strong>
+                                {{ actividad.duracion }}
+                            </p>
+                            <p>
+                                <strong>Descripción:</strong>
+                                {{ actividad.descripcion }}
+                            </p>
+                            <div class="fotos-container">
+                                {% for foto in actividad.fotos %}
+                                <img
+                                src="/{{ foto.ruta_archivo }}"
+                                class="actividad-foto"
+                                >
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('listado', page=page-1) }}">
+            <button>Anterior</button>
+        </a>
+        {% endif %}
+        <span>
+            Página {{ page }} de {{ total_pages }}
+        </span>
+        {% if page < total_pages %}
+        <a href="{{ url_for('listado', page=page+1) }}">
+            <button>Siguiente</button>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+
+<script
+src="{{ url_for('static', filename='javascript/listado.js') }}"
+></script>
+
+{% endblock %}

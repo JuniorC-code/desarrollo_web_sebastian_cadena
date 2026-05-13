@@ -181,6 +181,25 @@ def get_ultimos_5_miembros():
     session.close()
     return miembros
 
+# Funcion para obtener miembros por pagina (para el listado)
+
+def get_miembros_page(page, per_page=5):
+    session = SessionLocal()
+    miembros = (
+        session.query(Miembro)
+        .options(
+            joinedload(Miembro.comuna),
+            joinedload(Miembro.actividades).joinedload(Actividad.fotos)
+        )
+        .order_by(Miembro.id.desc())
+        .offset((page - 1) * per_page)
+        .limit(per_page)
+        .all()
+    )
+    total = session.query(Miembro).count()
+    session.close()
+    return miembros, total
+
 # ACTIVIDADES
 
 def create_actividad( miembro_id, dia, hora_inicio, duracion, tipo, nombre, descripcion):

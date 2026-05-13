@@ -153,7 +153,7 @@ const validarRegistro = () =>{
 
 let volverbtn = document.getElementById("volverbtn");
 volverbtn.addEventListener("click", () => {
-    window.location.href = "../html/index.html";
+    window.location.href = "/";
 });
 
 

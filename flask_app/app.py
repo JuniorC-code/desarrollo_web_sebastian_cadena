@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Flask, render_template, redirect, url_for, request
-from database.db import create_actividad, create_foto, create_miembro, get_comunas, get_ultimos_5_miembros
+from database.db import create_actividad, create_foto, create_miembro, get_comunas, get_miembros_page, get_ultimos_5_miembros
 from utils.validations import validate_register_data
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -52,7 +52,19 @@ def registro():
 
 @app.route('/listado')        
 def listado():
-    return render_template('listado.html')
+    page = request.args.get("page", 1, type=int)
+    miembros, total = get_miembros_page(page)
+    per_page = 5
+    total_pages = total // per_page
+    if total % per_page != 0:
+        total_pages += 1
+    return render_template(
+        "listado.html",
+        miembros=miembros,
+        page=page,
+        total_pages=total_pages
+    )
+
 
 @app.route('/estadisticas')   
 def estadisticas():
