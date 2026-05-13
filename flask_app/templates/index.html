@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestion DCC</title>
-    <link rel="stylesheet" href="../css/index.css">
-</head>
-<body>
+{% extends "base.html" %} {% block title %}Gestion DCC{% endblock %} {% block css %}
+    <link 
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/index.css')}}">
+
+{% endblock %} {% block content %}
     <div class="main-container">
-        <h1>Gestion DCC</h1>
-        <button class="btn"  id="registro">Registro</button>
-        <button class="btn" id="listado">Listado</button>
+        <h1>Bienvenido a Gestion DCC</h1>
+        <button class="btn"  id="registro">Registro miembros y actividades</button>
+        <button class="btn" id="listado">Ver listado de miembros</button>
         <button class="btn" id="estadisticas">Estadísticas</button>
     </div>
-    <script src = "../javascript/index.js"></script>
-</body>
-</html>
+    {% endblock %} {% block javascript %}
+    <script src = "{{ url_for('static', filename='javascript/index.js') }}"></script>
+{% endblock %}
