@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from database.db import create_actividad, create_foto, create_miembro, get_comunas, get_miembros_page, get_todos_los_miembros, get_ultimos_5_miembros, get_actividades
 from utils.validations import validate_register_data
 
@@ -66,31 +66,4 @@ def listado():
 
 @app.route('/estadisticas')   
 def estadisticas():
-    # ── Gráfico 1: miembros por día ──────────────────────────────
-    todos_miembros = get_todos_los_miembros()
-    conteo_dias = defaultdict(int)
-    for m in todos_miembros:
-        dia = m.fecha_registro.strftime("%Y-%m-%d")
-        conteo_dias[dia] += 1
-    miembros_por_dia = [{"dia": k, "total": v} for k, v in sorted(conteo_dias.items())]
-
-    # ── Gráfico 2: actividades por tipo ──────────────────────────
-    actividades = get_actividades()
-    conteo_tipo = defaultdict(int)
-    for a in actividades:
-        conteo_tipo[a.tipo] += 1
-    actividades_por_tipo = [{"tipo": k, "total": v} for k, v in conteo_tipo.items()]
-
-    # ── Gráfico 3: actividades por comuna ────────────────────────
-    conteo_comuna = defaultdict(int)
-    for m in todos_miembros:
-        for a in m.actividades:
-            conteo_comuna[m.comuna.nombre] += 1
-    actividades_por_comuna = [{"comuna": k, "total": v} for k, v in
-                               sorted(conteo_comuna.items(), key=lambda x: x[1], reverse=True)]
-
-    return render_template('estadisticas.html',
-        miembros_por_dia       = json.dumps(miembros_por_dia),
-        actividades_por_tipo   = json.dumps(actividades_por_tipo),
-        actividades_por_comuna = json.dumps(actividades_por_comuna)
-    )
+    return render_template('estadisticas.html')
