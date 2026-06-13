@@ -91,7 +91,7 @@ class Actividad(Base):
     # relaciones
     miembro = relationship( "Miembro", back_populates="actividades" )
     fotos = relationship( "Foto", back_populates="actividad", cascade="all, delete" )
-
+    comentarios = relationship( "Comentario", back_populates="actividad", cascade="all, delete" )
 
 class Foto(Base):
     __tablename__ = "foto"
@@ -103,6 +103,28 @@ class Foto(Base):
 
     # relaciones
     actividad = relationship( "Actividad", back_populates="fotos" )
+
+
+
+ # Nuevo modelo para comentarios
+
+class Comentario(Base):
+    __tablename__ = "comentario"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    actividad_id = Column(
+        Integer,
+        ForeignKey("actividad.id"),
+        nullable=False
+    )
+
+    actividad = relationship(
+        "Actividad",
+        back_populates="comentarios"
+    )    
 
 # =====================================================
 # Funciones para trabajar con la base de datos
@@ -272,3 +294,23 @@ def get_fotos_by_actividad(actividad_id):
     fotos = (session.query(Foto).filter_by(actividad_id=actividad_id).all())
     session.close()
     return fotos
+
+
+## COMENTARIOS
+
+
+# Crear un nuevo comentario para una actividad
+def crear_comentario(nombre, texto, actividad_id):
+    session = SessionLocal()
+
+    comentario = Comentario(
+        nombre=nombre,
+        texto=texto,
+        fecha=DateTime.now(),
+        actividad_id=actividad_id
+    )
+
+    session.add(comentario)
+    session.commit()
+
+    session.close()

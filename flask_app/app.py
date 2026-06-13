@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from database.db import create_actividad, create_foto, create_miembro, get_comunas, get_miembros_page, get_todos_los_miembros, get_ultimos_5_miembros, get_actividades
+from database.db import crear_comentario, create_actividad, create_foto, create_miembro, get_comunas, get_miembros_page, get_todos_los_miembros, get_ultimos_5_miembros, get_actividades
 from utils.validations import validate_register_data
 
 from collections import defaultdict
@@ -129,4 +129,40 @@ def api_estadisticas():
         "miembros_por_dia": miembros_por_dia,
         "actividades_por_tipo": actividades_por_tipo,
         "actividades_por_comuna": actividades_por_comuna
+    })
+
+
+@app.route("/agregar-comentario", methods=["POST"])
+def agregar_comentario():
+
+    nombre = request.form.get("nombre", "").strip()
+    texto = request.form.get("texto", "").strip()
+    actividad_id = request.form.get("actividad_id")
+
+    errores = []
+
+    if len(nombre) < 3 or len(nombre) > 80:
+        errores.append(
+            "El nombre debe tener entre 3 y 80 caracteres"
+        )
+
+    if len(texto) < 5:
+        errores.append(
+            "El comentario debe tener al menos 5 caracteres"
+        )
+
+    if errores:
+        return jsonify({
+            "success": False,
+            "errores": errores
+        })
+
+    crear_comentario(
+        nombre,
+        texto,
+        int(actividad_id)
+    )
+
+    return jsonify({
+        "success": True
     })

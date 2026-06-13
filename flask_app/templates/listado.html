@@ -66,6 +66,41 @@ href="{{ url_for('static', filename='css/listado.css') }}"
                                 <img src="/{{ foto.ruta_archivo }}" class="actividad-foto" alt="Foto actividad">
                                 {% endfor %}
                             </div>
+
+                            <hr>
+
+                            <h3>Agregar comentario</h3>
+
+                            <form
+                                class="comentario-form"
+                                data-actividad="{{ actividad.id }}">
+
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    placeholder="Nombre"
+                                    minlength="3"
+                                    maxlength="80"
+                                    required>
+
+                                <br><br>
+
+                                <textarea
+                                    name="texto"
+                                    rows="4"
+                                    cols="50"
+                                    minlength="5"
+                                    required
+                                    placeholder="Escriba su comentario">
+                                </textarea>
+
+                                <br><br>
+
+                                <button type="submit">
+                                    Agregar comentario
+                                </button>
+                                <div class="errores"></div>
+                            </form>
                         </div>
                         {% endfor %}
                     </div>
