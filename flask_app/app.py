@@ -67,3 +67,66 @@ def listado():
 @app.route('/estadisticas')   
 def estadisticas():
     return render_template('estadisticas.html')
+
+# Ruta para obtener datos de las estadísticas desde la db c:
+
+@app.route('/api/estadisticas')
+def api_estadisticas():
+
+    # Gráfico 1
+    todos_miembros = get_todos_los_miembros()
+
+    conteo_dias = defaultdict(int)
+
+    for miembro in todos_miembros:
+        dia = miembro.fecha_registro.strftime("%Y-%m-%d")
+        conteo_dias[dia] += 1
+
+    miembros_por_dia = [
+        {
+            "dia": dia,
+            "total": total
+        }
+        for dia, total in sorted(conteo_dias.items())
+    ]
+
+    # Gráfico 2
+    actividades = get_actividades()
+
+    conteo_tipo = defaultdict(int)
+
+    for actividad in actividades:
+        conteo_tipo[actividad.tipo] += 1
+
+    actividades_por_tipo = [
+        {
+            "tipo": tipo,
+            "total": total
+        }
+        for tipo, total in conteo_tipo.items()
+    ]
+
+    # Gráfico 3
+    conteo_comuna = defaultdict(int)
+
+    for miembro in todos_miembros:
+        for actividad in miembro.actividades:
+            conteo_comuna[miembro.comuna.nombre] += 1
+
+    actividades_por_comuna = [
+        {
+            "comuna": comuna,
+            "total": total
+        }
+        for comuna, total in sorted(
+            conteo_comuna.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
+    ]
+
+    return jsonify({
+        "miembros_por_dia": miembros_por_dia,
+        "actividades_por_tipo": actividades_por_tipo,
+        "actividades_por_comuna": actividades_por_comuna
+    })

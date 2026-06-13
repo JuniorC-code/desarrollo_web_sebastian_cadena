@@ -1,30 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Estadísticas</title>
-    <link rel="stylesheet" href="../static/css/estadisticas.css">
-</head>
-<body>
+{% extends 'base.html' %}
 
-<div class="container">
-    <h1>Estadísticas de Actividades</h1>
+{% block title %}
+Estadísticas
+{% endblock %}
 
-    <button id="volver">Volver</button>
+{% block content %}
 
-    <h2>Total de actividades</h2>
-    <p id="total"></p>
+<h1>Estadísticas</h1>
 
-    <h2>Actividades por categoría</h2>
-    <canvas id="graficoCategoria"></canvas>
+<h2>Miembros registrados por día</h2>
+<div id="grafico-lineas" class="grafico"></div>
 
-    <h2>Actividades por usuario</h2>
-    <canvas id="graficoUsuario"></canvas>
+<h2>Actividades por tipo</h2>
+<div id="grafico-torta" class="grafico"></div>
 
-</div>
+<h2>Actividades por comuna</h2>
+<div id="grafico-barras" class="grafico"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="../javascript/estadisticas.js"></script>
+<p>
+    <a href="{{ url_for('index') }}">
+        Volver a la portada
+    </a>
+</p>
 
-</body>
-</html>
+{% endblock %}
+
+{% block javascript %}
+
+<style>
+.grafico {
+    width: 900px;
+    height: 400px;
+    margin-bottom: 40px;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.pie.min.js"></script>
+
+<script src="{{ url_for('static', filename='javascript/estadisticas.js') }}"></script>
+
+{% endblock %}
