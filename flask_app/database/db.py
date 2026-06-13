@@ -200,6 +200,20 @@ def get_miembros_page(page, per_page=5):
     session.close()
     return miembros, total
 
+
+def get_todos_los_miembros():
+    session = SessionLocal()
+    miembros = (
+        session.query(Miembro)
+        .options(
+            joinedload(Miembro.comuna),
+            joinedload(Miembro.actividades)
+        )
+        .all()
+    )
+    session.close()
+    return miembros
+
 # ACTIVIDADES
 
 def create_actividad( miembro_id, dia, hora_inicio, duracion, tipo, nombre, descripcion):
