@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador de Actividades</title>
+    <style>
+        /* Estilos base para la interfaz y el resaltado */
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .buscador-contenedor { margin-bottom: 30px; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        .tarjeta-actividad { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 4px; background-color: #f9f9f9; }
+        .tarjeta-actividad h3 { margin-top: 0; color: #333; }
+        .meta-info { color: #666; font-size: 14px; }
+        .mensaje { color: #888; font-style: italic; }
+        /* Etiqueta para destacar el texto que coincide con la búsqueda */
+        mark { background-color: #ffeb3b; padding: 2px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Sistema de Búsqueda de Actividades</h2>
+    
+    <div class="buscador-contenedor">
+        <input type="text" id="input-busqueda" placeholder="Escribe al menos 3 caracteres para buscar por nombre, descripción o comuna...">
+    </div>
+
+    <div id="contenedor-resultados"></div>
+
+    <script th:src="@{/js/buscador.js}"></script>
+</body>
+</html>
