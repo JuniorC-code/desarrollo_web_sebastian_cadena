@@ -15,12 +15,10 @@ public class ApiController {
 
     private final ActividadService actividadService;
 
-    // Inyección por constructor (tal cual como en tu auxiliar)
     public ApiController(ActividadService actividadService) {
         this.actividadService = actividadService;
     }
     
-    // Ruta que recibirá el texto de búsqueda desde JavaScript
     @GetMapping("/api/buscar/{patron}")
     public Map<String, List<Actividad>> buscarActividadesEndpoint(@PathVariable("patron") String patron) {
         List<Actividad> actividades = actividadService.buscarActividades(patron);

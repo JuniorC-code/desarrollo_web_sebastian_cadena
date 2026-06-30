@@ -1,19 +1,45 @@
 package com.tarea4.tarea4.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import com.tarea4.tarea4.models.Actividad;
+import com.tarea4.tarea4.models.ActividadRepository; 
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ActividadService {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate; // Esta herramienta se encarga de hablar con la DB 🗄️
+    private final ActividadRepository actividadRepository;
 
-    public List<Actividad> buscarActividades(String texto) {
-        // Aquí adentro estructuraremos la consulta para la base de datos
-        return null; 
+    public ActividadService(ActividadRepository actividadRepository) {
+        this.actividadRepository = actividadRepository;
     }
+
+    public List<Actividad> buscarActividades(String patron) {
+        List<Actividad> todas = actividadRepository.findAll();
+        List<Actividad> filtradas = new ArrayList<>();
+        
+        String p = patron.toLowerCase();
+
+        for (Actividad act : todas) {
+            // 1. Verificar nombre de actividad
+            boolean coincideNombre = act.getNombre() != null && act.getNombre().toLowerCase().contains(p);
+            
+            // 2. Verificar descripción
+            boolean coincideDesc = act.getDescripcion() != null && act.getDescripcion().toLowerCase().contains(p);
+            
+            // 3. Verificar nombre de comuna (Navegando: Actividad -> Miembro -> Comuna -> Nombre)
+            boolean coincideComuna = false;
+            if (act.getMiembro() != null && act.getMiembro().getComuna() != null) {
+                String nombreComuna = act.getMiembro().getComuna().getNombre();
+                coincideComuna = nombreComuna != null && nombreComuna.toLowerCase().contains(p);
+            }
+
+            // Si calza con cualquiera de las 3, va a la lista
+            if (coincideNombre || coincideDesc || coincideComuna) {
+            filtradas.add(act);
+        }
+    }
+    return filtradas;
+}
 }
