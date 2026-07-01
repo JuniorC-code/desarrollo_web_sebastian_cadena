@@ -33,7 +33,6 @@ public class ApiController {
         try {
             // Ejecuta la lógica del servicio
             Actividad actActualizada = actividadService.agregarNota(actividadId, nota);
-
             // Respondemos con los nuevos datos recalculados para que JS actualice la interfaz
             return Map.of(
                 "success", true,

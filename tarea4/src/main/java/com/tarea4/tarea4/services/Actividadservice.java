@@ -27,13 +27,13 @@ public class ActividadService {
         String p = patron.toLowerCase();
 
         for (Actividad act : todas) {
-            // 1. Verificar nombre de actividad
+            // Verificar nombre de actividad
             boolean coincideNombre = act.getNombre() != null && act.getNombre().toLowerCase().contains(p);
             
-            // 2. Verificar descripción
+            // Verificar descripción
             boolean coincideDesc = act.getDescripcion() != null && act.getDescripcion().toLowerCase().contains(p);
             
-            // 3. Verificar nombre de comuna (Navegando: Actividad -> Miembro -> Comuna -> Nombre)
+            // Verificar nombre de comuna (Navegando: Actividad -> Miembro -> Comuna -> Nombre)
             boolean coincideComuna = false;
             if (act.getMiembro() != null && act.getMiembro().getComuna() != null) {
                 String nombreComuna = act.getMiembro().getComuna().getNombre();
@@ -49,20 +49,18 @@ public class ActividadService {
     }
     // Método para agregar la nota de forma segura (Parte 2 de tarea 4)
     public Actividad agregarNota(Integer actividadId, Integer valorNota) {
-        // 1. Validar que la nota esté entre 1 y 7 inclusives
+        // Validar que la nota esté entre 1 y 7
         if (valorNota < 1 || valorNota > 7) {
             throw new IllegalArgumentException("La nota debe ser un número entero entre 1 y 7.");
         }
 
-        // 2. Buscar la actividad
+        // Buscar actividad
         Actividad actividad = actividadRepository.findById(actividadId)
                 .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
 
-        // 3. Crear y guardar la nueva nota
+        // Crear y guardar la nueva nota
         Nota nuevaNota = new Nota(valorNota, actividad);
         notaRepository.save(nuevaNota);
-
-        // 4. Forzar la actualización de la lista interna antes de retornar
         actividad.getNotas().add(nuevaNota);
 
         return actividad;

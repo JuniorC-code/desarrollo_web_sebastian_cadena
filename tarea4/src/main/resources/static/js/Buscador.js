@@ -2,18 +2,15 @@
 const inputBusqueda = document.getElementById('input-busqueda');
 const contenedorResultados = document.getElementById('contenedor-resultados');
 
-// Escuchamos las pulsaciones del teclado mediante el evento 'input'
-inputBusqueda.addEventListener('input', function(evento) {
-    const texto = evento.target.value.trim(); // Limpia espacios en blanco iniciales/finales
 
-    // Regla del enunciado: Mínimo 3 caracteres para disparar la búsqueda
+inputBusqueda.addEventListener('input', function(evento) {
+    const texto = evento.target.value.trim(); // Limpiar espacios
+
+    // 3 caracts. minimo
     if (texto.length >= 3) {
-        
-        // Llamada asíncrona (Fetch) hacia nuestro ApiController del Backend
         fetch(`/api/buscar/${encodeURIComponent(texto)}`)
-            .then(response => response.json()) // Convierte la respuesta JSON pura a un objeto JS
+            .then(response => response.json()) // C
             .then(resultado => {
-                // Pasamos la lista (resultado.data) y el texto buscado a la función de dibujo
                 renderizarResultados(resultado.data, texto);
             })
             .catch(error => {
@@ -21,7 +18,7 @@ inputBusqueda.addEventListener('input', function(evento) {
             });
 
     } else {
-        // Si hay menos de 3 caracteres (o borró el texto), limpiamos la pantalla
+        // Smenos de 3 -> Limpiar resultados
         contenedorResultados.innerHTML = '';
     }
 });
@@ -43,10 +40,8 @@ function renderizarResultados(actividades, textoBuscado) {
         const dia = act.dia || '';
         const tipo = act.tipo || '';
         
-        // --- NUEVOS DATOS SOLICITADOS ---
-        // Obtenemos la nota promedio calculada en el backend (devuelve "-" si no hay notas)
+        // 2da parte: obtener nota promedio y total de evaluaciones
         const notaPromedio = act.notaPromedio || '-';
-        // Contamos cuántas evaluaciones tiene en total esta actividad
         const totalNotas = act.notas ? act.notas.length : 0;
 
         const nombreResaltado = resaltarTexto(nombre, textoBuscado);
@@ -55,8 +50,7 @@ function renderizarResultados(actividades, textoBuscado) {
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-actividad';
-        
-        // Mantenemos la estructura de tu HTML original agregando la información de evaluación abajo
+
         tarjeta.innerHTML = `
             <h3>${nombreResaltado}</h3>
             <p>${descResaltada}</p>
@@ -98,14 +92,9 @@ function renderizarResultados(actividades, textoBuscado) {
     });
 }
 
-// Función con Expresión Regular para envolver las coincidencias en etiquetas <mark>
 function resaltarTexto(textoOriginal, textoABuscar) {
     if (!textoOriginal) return '';
-    
-    // 'g' = global (todas las apariciones), 'i' = case-insensitive (ignora mayúsculas/minúsculas)
     const regex = new RegExp(`(${textoABuscar})`, 'gi');
-    
-    // Reemplaza reteniendo el formato original del texto usando el grupo capturado ($1)
     return textoOriginal.replace(regex, '<mark>$1</mark>');
 }
 
@@ -114,18 +103,14 @@ function enviarEvaluacion(actividadId) {
     const select = document.getElementById(`select-nota-${actividadId}`);
     const notaSeleccionada = select.value;
 
-    // Validación en el frontend antes de enviar
     if (!notaSeleccionada) {
         alert("Por favor, selecciona una nota entre 1 y 7.");
         return;
     }
-
-    // Usamos FormData para enviar los parámetros que espera el @RequestParam de Java
     const datos = new FormData();
     datos.append("actividadId", actividadId);
     datos.append("nota", notaSeleccionada);
 
-    // Llamada asíncrona mediante POST
     fetch('/api/actividades/evaluar', {
         method: 'POST',
         body: datos
@@ -133,11 +118,9 @@ function enviarEvaluacion(actividadId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // ¡Magia! Recalculamos y actualizamos la interfaz inmediatamente sin recargar
+            // Recalcular!!!
             document.getElementById(`nota-val-${actividadId}`).innerText = data.nuevaNotaPromedio;
             document.getElementById(`nota-count-${actividadId}`).innerText = data.totalNotas;
-            
-            // Limpiamos el selector
             select.value = "";
             alert("Nota agregada correctamente.");
         } else {

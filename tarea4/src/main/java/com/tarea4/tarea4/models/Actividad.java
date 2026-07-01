@@ -12,7 +12,7 @@ public class Actividad {
     private Integer id;
 
     @Column(nullable = false)
-    private String dia; // Lo manejamos como String para simplificar el Enum de la DB
+    private String dia; 
 
     @Column(nullable = false)
     private String tipo;
@@ -23,7 +23,6 @@ public class Actividad {
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    // Enlazamos con Miembro: Muchas actividades pertenecen a un Miembro
     @ManyToOne
     @JoinColumn(name = "miembro_id", nullable = false)
     private Miembro miembro;
@@ -45,16 +44,16 @@ public class Actividad {
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Nota> notas;
 
-    // Método auxiliar para calcular el promedio (La "nota" que se muestra)
+    // Método auxiliar para calcular el promedio
     public String getNotaPromedio() {
         if (notas == null || notas.isEmpty()) {
-            return "-"; // Si no ha sido evaluada, retorna "-" como pide el enunciado
+            return "-"; // Si no ha sido evaluada, retorna "-" como enunciado
         }
         double suma = 0;
         for (Nota n : notas) {
             suma += n.getValor();
         }
         double promedio = suma / notas.size();
-        return String.format("%.1f", promedio); // Retorna el promedio con 1 decimal (ej: "5.4")
+        return String.format("%.1f", promedio); // promedio con 1 decimal 
     }
 }
