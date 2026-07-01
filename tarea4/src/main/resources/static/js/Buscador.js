@@ -26,35 +26,37 @@ inputBusqueda.addEventListener('input', function(evento) {
     }
 });
 
-// Función que genera dinámicamente las tarjetas en el HTML
+
 function renderizarResultados(actividades, textoBuscado) {
-    // Reseteamos el contenedor antes de dibujar los nuevos resultados
     contenedorResultados.innerHTML = '';
 
-    // Si el backend no encontró registros coincidentes
     if (actividades.length === 0) {
         contenedorResultados.innerHTML = '<p class="mensaje">No se encontraron actividades que coincidan con la búsqueda.</p>';
         return;
     }
 
-    // Si hay registros, los iteramos estilo 'for each'
     actividades.forEach(act => {
-        // Desestructuración o fallback seguro si algún campo viene nulo desde la DB
         const nombre = act.nombre || '';
         const descripcion = act.descripcion || '';
         const comuna = (act.miembro && act.miembro.comuna) ? act.miembro.comuna.nombre : 'No especificada';
         const miembro = act.miembro ? act.miembro.nombre : 'Anónimo';
         const dia = act.dia || '';
         const tipo = act.tipo || '';
+        
+        // --- NUEVOS DATOS SOLICITADOS ---
+        // Obtenemos la nota promedio calculada en el backend (devuelve "-" si no hay notas)
+        const notaPromedio = act.notaPromedio || '-';
+        // Contamos cuántas evaluaciones tiene en total esta actividad
+        const totalNotas = act.notas ? act.notas.length : 0;
 
-        // Resaltamos las palabras coincidentes usando la función auxiliar
         const nombreResaltado = resaltarTexto(nombre, textoBuscado);
         const descResaltada = resaltarTexto(descripcion, textoBuscado);
         const comunaResaltada = resaltarTexto(comuna, textoBuscado);
 
-        // Construimos el nodo HTML para la tarjeta de la actividad
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-actividad';
+        
+        // Mantenemos la estructura de tu HTML original agregando la información de evaluación abajo
         tarjeta.innerHTML = `
             <h3>${nombreResaltado}</h3>
             <p>${descResaltada}</p>
@@ -64,9 +66,34 @@ function renderizarResultados(actividades, textoBuscado) {
                 <strong>Día:</strong> ${dia} | 
                 <strong>Tipo:</strong> ${tipo}
             </div>
+            
+            <div class="evaluacion-box" style="margin-top: 12px; padding: 10px; background-color: #f0f0f0; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>Nota Promedio:</strong> <span id="nota-val-${act.id}" style="font-weight: bold; color: #007bff;">${notaPromedio}</span>
+                    <span style="color: #666; font-size: 13px; margin-left: 5px;">
+                        (<span id="nota-count-${act.id}">${totalNotas}</span> evaluaciones)
+                    </span>
+                </div>
+                
+                <div class="evaluar-form">
+                    <label for="select-nota-${act.id}" style="font-size: 14px; margin-right: 5px;">Evaluar:</label>
+                    <select id="select-nota-${act.id}" style="padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
+                        <option value="">--</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    <button onclick="enviarEvaluacion(${act.id})" style="margin-left: 5px; padding: 4px 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Guardar
+                    </button>
+                </div>
+            </div>
         `;
 
-        // Añadimos la tarjeta al final del contenedor de resultados
         contenedorResultados.appendChild(tarjeta);
     });
 }
@@ -80,4 +107,44 @@ function resaltarTexto(textoOriginal, textoABuscar) {
     
     // Reemplaza reteniendo el formato original del texto usando el grupo capturado ($1)
     return textoOriginal.replace(regex, '<mark>$1</mark>');
+}
+
+
+function enviarEvaluacion(actividadId) {
+    const select = document.getElementById(`select-nota-${actividadId}`);
+    const notaSeleccionada = select.value;
+
+    // Validación en el frontend antes de enviar
+    if (!notaSeleccionada) {
+        alert("Por favor, selecciona una nota entre 1 y 7.");
+        return;
+    }
+
+    // Usamos FormData para enviar los parámetros que espera el @RequestParam de Java
+    const datos = new FormData();
+    datos.append("actividadId", actividadId);
+    datos.append("nota", notaSeleccionada);
+
+    // Llamada asíncrona mediante POST
+    fetch('/api/actividades/evaluar', {
+        method: 'POST',
+        body: datos
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // ¡Magia! Recalculamos y actualizamos la interfaz inmediatamente sin recargar
+            document.getElementById(`nota-val-${actividadId}`).innerText = data.nuevaNotaPromedio;
+            document.getElementById(`nota-count-${actividadId}`).innerText = data.totalNotas;
+            
+            // Limpiamos el selector
+            select.value = "";
+            alert("Nota agregada correctamente.");
+        } else {
+            alert("Error al guardar la nota: " + data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Error en la petición de evaluación:", error);
+    });
 }

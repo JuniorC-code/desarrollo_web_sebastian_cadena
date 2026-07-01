@@ -1,5 +1,7 @@
 package com.tarea4.tarea4.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -35,6 +37,24 @@ public class Actividad {
     public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
     public Miembro getMiembro() { return miembro; }
+
+    // Getters y Setters para las notas
+    public List<Nota> getNotas() { return notas; }
+    public void setNotas(List<Nota> notas) { this.notas = notas; }
     
-    // Agrega los setters correspondientes para que Spring pueda mapearlos...
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Nota> notas;
+
+    // Método auxiliar para calcular el promedio (La "nota" que se muestra)
+    public String getNotaPromedio() {
+        if (notas == null || notas.isEmpty()) {
+            return "-"; // Si no ha sido evaluada, retorna "-" como pide el enunciado
+        }
+        double suma = 0;
+        for (Nota n : notas) {
+            suma += n.getValor();
+        }
+        double promedio = suma / notas.size();
+        return String.format("%.1f", promedio); // Retorna el promedio con 1 decimal (ej: "5.4")
+    }
 }

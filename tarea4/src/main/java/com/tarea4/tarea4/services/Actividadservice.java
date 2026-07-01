@@ -2,7 +2,10 @@ package com.tarea4.tarea4.services;
 
 import org.springframework.stereotype.Service;
 import com.tarea4.tarea4.models.Actividad;
-import com.tarea4.tarea4.models.ActividadRepository; 
+import com.tarea4.tarea4.models.ActividadRepository;
+import com.tarea4.tarea4.models.Nota;
+import com.tarea4.tarea4.models.NotaRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +13,11 @@ import java.util.List;
 public class ActividadService {
 
     private final ActividadRepository actividadRepository;
+    private final NotaRepository notaRepository;
 
-    public ActividadService(ActividadRepository actividadRepository) {
+    public ActividadService(ActividadRepository actividadRepository, NotaRepository notaRepository) {
         this.actividadRepository = actividadRepository;
+        this.notaRepository = notaRepository;
     }
 
     public List<Actividad> buscarActividades(String patron) {
@@ -38,8 +43,29 @@ public class ActividadService {
             // Si calza con cualquiera de las 3, va a la lista
             if (coincideNombre || coincideDesc || coincideComuna) {
             filtradas.add(act);
+            }
         }
+    return filtradas;    
     }
-    return filtradas;
-}
+    // Método para agregar la nota de forma segura (Parte 2 de tarea 4)
+    public Actividad agregarNota(Integer actividadId, Integer valorNota) {
+        // 1. Validar que la nota esté entre 1 y 7 inclusives
+        if (valorNota < 1 || valorNota > 7) {
+            throw new IllegalArgumentException("La nota debe ser un número entero entre 1 y 7.");
+        }
+
+        // 2. Buscar la actividad
+        Actividad actividad = actividadRepository.findById(actividadId)
+                .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
+
+        // 3. Crear y guardar la nueva nota
+        Nota nuevaNota = new Nota(valorNota, actividad);
+        notaRepository.save(nuevaNota);
+
+        // 4. Forzar la actualización de la lista interna antes de retornar
+        actividad.getNotas().add(nuevaNota);
+
+        return actividad;
+    }
+
 }
